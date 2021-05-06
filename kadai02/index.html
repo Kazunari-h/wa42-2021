@@ -7,11 +7,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>投票アプリ</title>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.js" defer></script>
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 
     </head>
 
     <body>
-        <div x-data="">
+        <div x-data="{select: null, selectList: ['Python', 'JavaScript', 'PHP' , 'Go'], quesion: '廣澤が来週から始める専科の講座の名前は？', answer: 'JavaScript'}"
+            class="p-4 w-1/2 mx-auto">
+            <p x-text="quesion"></p>
+
+            <ul>
+                <template x-for="item in selectList">
+                    <li x-text="item" x-on:click="select = item"></li>
+                </template>
+            </ul>
+            <template x-if="select">
+                <p x-text="`${select === answer ? '正解' : '残念'} ${answer}`"></p>
+            </template>
 
         </div>
     </body>
