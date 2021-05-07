@@ -13,16 +13,18 @@
 
     <body>
         <div x-data="{select: null, selectList: ['Python', 'JavaScript', 'PHP' , 'Go'], quesion: '廣澤が来週から始める専科の講座の名前は？', answer: 'JavaScript'}"
-            class="p-4 w-1/2 mx-auto">
-            <p x-text="quesion"></p>
+            class="p-6 max-w-sm my-6 mx-auto bg-yellow-100 rounded-md shadow-2xl">
+            <p x-text="quesion" class="text-lg font-bold text-gray-700 my-4"></p>
 
             <ul>
                 <template x-for="item in selectList">
-                    <li x-text="item" x-on:click="select = item"></li>
+                    <li x-text="item" x-on:click="select = item"
+                        class="my-4 py-2 px-4 rounded text-sm text-white bg-green-400 hover:bg-green-600">
+                    </li>
                 </template>
             </ul>
             <template x-if="select">
-                <p x-text="`${select === answer ? '正解' : '残念'} ${answer}`"></p>
+                <p x-text="`${select === answer ? '正解' : '残念'} ${answer}`" class="text-gray-500"></p>
             </template>
 
         </div>
