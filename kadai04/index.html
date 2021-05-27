@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>アンケート</title>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.js" defer></script>
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+    </head>
+
+    <body>
+        <div x-data="survey()" x-init="init()" class="p-6 max-w-sm my-6 mx-auto bg-yellow-100 rounded-md shadow-2xl">
+            <p class="text-lg font-bold text-gray-700 my-4">
+                結婚したら悲しむ有名人は？
+            </p>
+
+            <ul>
+                <li @click="post()" class="my-4 py-2 px-4 rounded bg-green-400 hover:bg-green-600 flex items-center">
+                    <img class="w-12 h-12 rounded-full object-cover mr-2" src="./nakajo_ayami.jpg">
+                    <span class="text-sm text-white">中条あやみ</span>
+                </li>
+                <li class="my-4 py-2 px-4 rounded bg-green-400 hover:bg-green-600 flex items-center">
+                    <img class="w-12 h-12 rounded-full object-cover mr-2" src="./nakajo_ayami.jpg">
+                    <span class="text-sm text-white">吉岡里穂</span>
+                </li>
+                <li class="my-4 py-2 px-4 rounded bg-green-400 hover:bg-green-600 flex items-center">
+                    <img class="w-12 h-12 rounded-full object-cover mr-2" src="./nakajo_ayami.jpg">
+                    <span class="text-sm text-white">浜辺美波</span>
+                </li>
+                <li class="my-4 py-2 px-4 rounded bg-green-400 hover:bg-green-600 flex items-center">
+                    <img class="w-12 h-12 rounded-full object-cover mr-2" src="./nakajo_ayami.jpg">
+                    <span class="text-sm text-white">本田翼</span>
+                </li>
+            </ul>
+        </div>
+        <script>
+            function survey() {
+                return {
+                    uid: "",
+                    init() {
+                        firebase.initializeApp({
+                            apiKey: "AIzaSyBe8q8cIs6bS8dLpLhxOkt-4ubdaWXJLls",
+                            authDomain: "wa43-131b7.firebaseapp.com",
+                            databaseURL: "https://wa43-131b7.firebaseio.com",
+                            projectId: "wa43-131b7",
+                            storageBucket: "wa43-131b7.appspot.com",
+                            messagingSenderId: "988743345347",
+                            appId: "1:988743345347:web:444ec378db21484efc6e76",
+                            measurementId: "G-3WFNFSVQH5"
+                        });
+
+                        const vm = this
+                        firebase
+                            .auth()
+                            .onAuthStateChanged((user) => {
+                                if (user) {
+                                    console.log(user);
+                                    vm.uid = user.uid
+                                } else {
+                                    vm.uid = ""
+                                }
+                            })
+
+                        firebase.auth().signInAnonymously()
+
+
+                    },
+                    post() {
+                        const db = firebase.firestore()
+                        db.collection("survey/gdISmCtgZNPqSUENsFFB/result")
+                            .add({
+                                answer: "中条あやみ",
+                                userId: this.uid
+                            })
+                    }
+                }
+            }
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>検索</title>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.js" defer></script>
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+            integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ=="
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    </head>
+
+    <body>
+        <div x-data='searchObject()'>
+            <div class="p-4">
+                <input type="text" x-model="inputText" class="border rounded mr-2 px-4 py-1">
+                <button @click="search()" class="bg-blue-500 text-white px-4 py-1 rounded">検索</button>
+            </div>
+            <ul class="p-4">
+                <template x-for="post in posts">
+                    <li class="border rounded px-4 py-2 my-4"><a :href="`https://prtimes.jp${post.url}`"
+                            x-text="post.title"></a></li>
+                </template>
+            </ul>
+        </div>
+
+        <script>
+            function searchObject() {
+                return {
+                    inputText: "",
+                    posts: [
+                        {
+                            url: "https://google.com",
+                            title: "Google",
+                        },
+                        {
+                            url: "https://yahoo.co.jp",
+                            title: "Yahoo",
+                        },
+                    ],
+                    search() {
+                        // axiosでinputTextの内容で検索をする
+                        // https://prtimes.jp/api/search_release.php?type=search&v=検索キーワード
+
+                        const vm = this
+                        axios
+                            .get(`https://prtimes.jp/api/search_release.php?type=search&v=${vm.inputText}`)
+                            .then(res => {
+                                vm.posts = res.data.articles
+                            })
+                        // 取得できた結果で画面を更新する。
+                    }
+                }
+            }
+
+        </script>
+
+    </body>
+
+</html>
